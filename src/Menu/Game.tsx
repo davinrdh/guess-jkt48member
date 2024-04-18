@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { ContainerStyled } from "../Components/styled";
 import Finished from "./Finished";
@@ -9,26 +9,32 @@ import { dataMembers } from "../Components/db";
 
 export default function Game() {
   const [value, setValue] = useState<string>("");
-  const [index, setIndex] = useState<any>(
-    Math.floor(Math.random() * dataMembers?.length)
-  );
   const [usedIndexes, setUsedIndexes] = useState<any>([]);
-  const [clickCount, setClickCount] = useState<number>(0);
+  // const [clickCount, setClickCount] = useState<number>(0);
   const [isWrong, setIsWrong] = useState<boolean>(false);
   const [correctAnswer, setCorrectAnswer] = useState<any>([]);
   const [questionCount, setQuestionCount] = useState<number>(0);
-  const [timer, setTimer] = useState<any>(30);
+  const time = 30
+  const [timer, setTimer] = useState<any>(time);
 
-  console.log(clickCount)
+  const filterMember = localStorage.getItem('filter')
+  const data = filterMember === 'all' ? dataMembers : dataMembers.filter(data => data.status === filterMember)
+
+  const [index, setIndex] = useState<any>(
+    Math.floor(Math.random() * data?.length)
+  );
+
+  // console.log(clickCount)
 
   const generateRandomIndex = () => {
     let newIndex: any;
     do {
-      newIndex = Math.floor(Math.random() * dataMembers?.length);
+      newIndex = Math.floor(Math.random() * data?.length);
     } while (usedIndexes.includes(newIndex));
     setIndex(newIndex);
     setUsedIndexes([...usedIndexes, newIndex]);
-    setTimer(30);
+    setTimer(time);
+    setIsWrong(false)
   };
 
   useEffect(() => {
@@ -51,11 +57,19 @@ export default function Game() {
     }
   }, [questionCount, timer]);
 
-  const handleSubmit = () => {
-    setClickCount((prevCount) => prevCount + 1);
-    if (value.toLowerCase() === dataMembers[index]?.member) {
+  console.log(timer)
+
+  useEffect(() => {
+    if (timer == time - 1) {
+      setValue('')
+    }
+  }, [timer]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // setClickCount((prevCount) => prevCount + 1);
+    e.preventDefault();
+    if (value.toLowerCase() === data[index]?.member) {
       setQuestionCount((prevCount) => prevCount + 1);
-      setIsWrong(false);
       setCorrectAnswer((prevAnswers: any) => [...prevAnswers, true]);
       generateRandomIndex();
       setValue("");
@@ -71,7 +85,6 @@ export default function Game() {
   const handleSkip = () => {
     setValue("");
     setQuestionCount((prevCount) => prevCount + 1);
-    setIsWrong(false);
     generateRandomIndex();
   };
 
@@ -86,7 +99,7 @@ export default function Game() {
             <>
               <p className="mb-2">Who is she?</p>
               <img
-                src={dataMembers[index]?.img}
+                src={data[index]?.img}
                 alt=""
                 width={200}
                 className="rounded"
@@ -94,7 +107,7 @@ export default function Game() {
               <div className="text-danger mt-3" style={{ height: "2.5rem" }}>
                 {isWrong === true ? "Wrong answer! Please try again!" : ""}
               </div>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Control
                     value={value}
@@ -116,7 +129,7 @@ export default function Game() {
                   <Button
                     variant="danger"
                     className="w-100"
-                    onClick={handleSubmit}
+                    type="submit"
                   >
                     Submit
                   </Button>
