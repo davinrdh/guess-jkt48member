@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   activeFilters: null,
-  score: [],
+  score: [] as boolean[],
 };
 
 export const reduxSlice = createSlice({
