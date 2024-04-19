@@ -2,15 +2,18 @@
 import { Button, Form } from "react-bootstrap";
 import { ContainerStyled } from "../Components/styled";
 import { NavLink } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
+  const [filter, setFilter] = useState<string>("")
+
   useEffect(() => {
-    localStorage.setItem("filter", "all");
+    localStorage.setItem("filter", "");
   }, []);
 
   const handleChange = (event: any) => {
     localStorage.setItem("filter", event.target.value);
+    setFilter(event.target.value);
   };
 
   return (
@@ -26,17 +29,23 @@ export default function HomePage() {
             className="mb-3 w-75 text-center mx-auto"
             onChange={(e) => handleChange(e)}
           >
-            <option value="all">Member Status</option>
+            <option value="">Member Status</option>
             <option value="all">Active Member & Trainee</option>
             <option value="member">Active Member</option>
             <option value="trainee">Trainee</option>
           </Form.Select>
           {/* <p>Click the button to get started!</p> */}
-          <NavLink to={"/game"}>
-            <Button className="w-75 py-2 rounded-pills" variant="danger">
-              Start
-            </Button>
-          </NavLink>
+          {filter === "" ? (
+            <Button className="w-75 py-2 rounded-pills" variant="danger" disabled>Start</Button>
+          ) : (
+            <>
+              <NavLink to={"/game"}>
+                <Button className="w-75 py-2 rounded-pills" variant="danger">
+                  Start
+                </Button>
+              </NavLink>
+            </>
+          )}
         </ContainerStyled>
       </>
     </div>

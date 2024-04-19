@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   activeFilters: null,
+  score: [],
 };
 
 export const reduxSlice = createSlice({
@@ -11,7 +12,10 @@ export const reduxSlice = createSlice({
     setActiveFilters: (state, { payload }) => {
       state.activeFilters = payload;
     },
+    setScore: (state, { payload }) => {
+      state.score.push(payload);
+    },
   },
 });
 
-export const { setActiveFilters } = reduxSlice.actions;
+export const { setActiveFilters, setScore } = reduxSlice.actions;

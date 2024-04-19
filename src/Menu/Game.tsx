@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
-import { ContainerStyled } from "../Components/styled";
+import { Alert, Button, Form } from "react-bootstrap";
+import { ContainerStyled, ImageMember } from "../Components/styled";
 import Finished from "./Finished";
 import { dataMembers } from "../Components/db";
+import { NavLink } from "react-router-dom";
 
 export default function Game() {
   const [value, setValue] = useState<string>("");
@@ -14,11 +15,14 @@ export default function Game() {
   const [isWrong, setIsWrong] = useState<boolean>(false);
   const [correctAnswer, setCorrectAnswer] = useState<any>([]);
   const [questionCount, setQuestionCount] = useState<number>(0);
-  const time = 30
+  const time = 30;
   const [timer, setTimer] = useState<any>(time);
 
-  const filterMember = localStorage.getItem('filter')
-  const data = filterMember === 'all' ? dataMembers : dataMembers.filter(data => data.status === filterMember)
+  const filterMember = localStorage.getItem("filter");
+  const data =
+    filterMember === "all"
+      ? dataMembers
+      : dataMembers.filter((data) => data.status === filterMember);
 
   const [index, setIndex] = useState<any>(
     Math.floor(Math.random() * data?.length)
@@ -34,7 +38,7 @@ export default function Game() {
     setIndex(newIndex);
     setUsedIndexes([...usedIndexes, newIndex]);
     setTimer(time);
-    setIsWrong(false)
+    setIsWrong(false);
   };
 
   useEffect(() => {
@@ -57,11 +61,11 @@ export default function Game() {
     }
   }, [questionCount, timer]);
 
-  console.log(timer)
+  console.log(timer);
 
   useEffect(() => {
     if (timer == time - 1) {
-      setValue('')
+      setValue("");
     }
   }, [timer]);
 
@@ -75,6 +79,11 @@ export default function Game() {
       setValue("");
     } else {
       setIsWrong(true);
+      setValue("");
+    }
+
+    if(usedIndexes?.length === 10){
+      window.location.href = '/score'
     }
   };
 
@@ -90,55 +99,57 @@ export default function Game() {
 
   return (
     <>
-      <ContainerStyled>
-        <p>{usedIndexes?.length < 10 && timer}</p>
-        <div className="mx-3">
-          {usedIndexes.length === 10 ? (
-            <Finished correctAnswer={correctAnswer} />
-          ) : (
-            <>
-              <p className="mb-2">Who is she?</p>
-              <img
-                src={data[index]?.img}
-                alt=""
-                width={200}
-                className="rounded"
-              />
-              <div className="text-danger mt-3" style={{ height: "2.5rem" }}>
-                {isWrong === true ? "Wrong answer! Please try again!" : ""}
-              </div>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    value={value}
-                    onChange={({ target }) => handleChange(target.value)}
-                    type="text"
-                    placeholder="Enter name..."
-                    className=""
-                    required
-                  />
-                </Form.Group>
-                <div className="d-flex gap-3">
-                  <Button
-                    className="w-100"
-                    variant="outline-danger"
-                    onClick={handleSkip}
-                  >
-                    Skip
-                  </Button>
-                  <Button
-                    variant="danger"
-                    className="w-100"
-                    type="submit"
-                  >
-                    Submit
-                  </Button>
+      {filterMember === "" ? (
+        <Alert key="warning" variant="warning" className="bg-transparent border-0 text-center">
+          Please select member status first then press start! <br />
+          <NavLink to="/">&larr; Go back</NavLink>
+        </Alert>
+      ) : (
+        <ContainerStyled>
+          <p>{usedIndexes?.length < 10 && timer}</p>
+          <div className="mx-3">
+            {usedIndexes.length === 10 ? (
+              <Finished correctAnswer={correctAnswer} hidden />
+            ) : (
+              <>
+                <p className="mb-2">Who is she?</p>
+                <ImageMember
+                  src={data[index]?.img}
+                  alt=""
+                  className="rounded"
+                />
+                <div className="text-danger mt-3" style={{ height: "2.5rem" }}>
+                  {isWrong === true ? "Wrong answer! Please try again!" : ""}
                 </div>
-              </Form>
-            </>
-          )}
-        </div>
-      </ContainerStyled>
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3">
+                    <Form.Control
+                      value={value}
+                      onChange={({ target }) => handleChange(target.value)}
+                      type="text"
+                      placeholder="Enter name..."
+                      className=""
+                      required
+                    />
+                  </Form.Group>
+                  <div className="d-flex gap-3">
+                    <Button
+                      className="w-100"
+                      variant="outline-danger"
+                      onClick={handleSkip}
+                    >
+                      Skip
+                    </Button>
+                    <Button variant="danger" className="w-100" type="submit">
+                      Submit
+                    </Button>
+                  </div>
+                </Form>
+              </>
+            )}
+          </div>
+        </ContainerStyled>
+      )}
     </>
   );
 }
