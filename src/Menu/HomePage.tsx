@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const [filter, setFilter] = useState<string>("")
+  const [filter, setFilter] = useState<string>("");
 
   useEffect(() => {
     localStorage.setItem("filter", "");
@@ -22,6 +22,7 @@ export default function HomePage() {
         <ContainerStyled>
           {/* <h3 className="mt-5">Welcome to Guess JKT48 Member!</h3> */}
           <p>Can you guess the JKT48 members from the clues given?</p>
+          {/* <p>Ayo, tebak anggota JKT48 berdasarkan petunjuk yang diberikan!</p> */}
           <img src="/img/guess.png" height={250} className="mb-3" alt="" />
           {/* <p>Filters: </p> */}
           <Form.Select
@@ -36,7 +37,13 @@ export default function HomePage() {
           </Form.Select>
           {/* <p>Click the button to get started!</p> */}
           {filter === "" ? (
-            <Button className="w-75 py-2 rounded-pills" variant="danger" disabled>Start</Button>
+            <Button
+              className="w-75 py-2 rounded-pills"
+              variant="danger"
+              disabled
+            >
+              Start
+            </Button>
           ) : (
             <>
               <NavLink to={"/game"}>

@@ -97,6 +97,16 @@ export default function Game() {
     generateRandomIndex();
   };
 
+  useEffect(() => {
+    const timerWrong = setTimeout(() => {
+      setIsWrong(false);
+    }, 3000); 
+
+    return () => {
+      clearTimeout(timerWrong);
+    };
+  }, [isWrong]);
+
   return (
     <>
       {filterMember === "" ? (
@@ -106,13 +116,14 @@ export default function Game() {
         </Alert>
       ) : (
         <ContainerStyled>
-          <p>{usedIndexes?.length < 10 && timer}</p>
+          <p>{usedIndexes?.length < 10 && <Button variant="outline-danger" className="rounded-circle" style={{width: '50px', height: '50px'}}>{timer}</Button>}</p>
           <div className="mx-3">
             {usedIndexes.length === 10 ? (
               <Finished correctAnswer={correctAnswer} hidden />
             ) : (
               <>
-                <p className="mb-2">Who is she?</p>
+                <p className="mb-2">Question No {usedIndexes.length + 1}</p>
+                {/* <p className="mb-2">Pertanyaan No {usedIndexes.length + 1}</p> */}
                 <ImageMember
                   src={data[index]?.img}
                   alt=""
@@ -120,6 +131,7 @@ export default function Game() {
                 />
                 <div className="text-danger mt-3" style={{ height: "2.5rem" }}>
                   {isWrong === true ? "Wrong answer! Please try again!" : ""}
+                  {/* {isWrong === true ? "Jawaban salah! Ayo coba lagi!" : ""} */}
                 </div>
                 <Form onSubmit={handleSubmit}>
                   <Form.Group className="mb-3">

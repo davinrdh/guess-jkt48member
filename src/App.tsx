@@ -14,7 +14,7 @@ export default function App() {
           {/* <Route path="/score" element={<Finished />} /> */}
         </Routes>
       </Router>
-     <div className="fixed-bottom text-center mb-3" style={{fontSize: '12px'}}>Copyright&#169;2024 <a href="https://github.com/davinrdh/guess-jkt48member" target="_blank">GuessJKT48Member</a></div> 
+     <div className="fixed-bottom text-center pb-3" style={{fontSize: '12px'}}>Copyright&#169;2024 <a href="https://github.com/davinrdh/guess-jkt48member" target="_blank">GuessJKT48Member</a></div> 
     </div>
   )
 }
