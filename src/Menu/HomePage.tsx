@@ -3,9 +3,13 @@ import { Button, Form } from "react-bootstrap";
 import { ContainerStyled } from "../Components/styled";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
+import ModalInstructions from "../Components/ModalInstructions";
 
 export default function HomePage() {
   const [filter, setFilter] = useState<string>("");
+  const [modal, setModal] = useState(false);
+
+  const handleClose = () => setModal(false);
 
   useEffect(() => {
     localStorage.setItem("filter", "");
@@ -39,7 +43,7 @@ export default function HomePage() {
           {filter === "" ? (
             <Button
               className="w-75 py-2 rounded-pills"
-              variant="danger"
+              variant="secondary"
               disabled
             >
               Start
@@ -53,6 +57,10 @@ export default function HomePage() {
               </NavLink>
             </>
           )}
+          <Button variant="" className="text-light" onClick={() => setModal(!modal)}>
+            Play instructions? <span className="text-primary">Click here!</span>
+            <ModalInstructions show={modal} handleClose={handleClose} />
+          </Button>
         </ContainerStyled>
       </>
     </div>

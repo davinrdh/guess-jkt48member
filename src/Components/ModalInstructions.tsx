@@ -5,7 +5,8 @@ export default function ModalInstructions({show, handleClose}: any) {
   return (
     <Modal show={show} onHide={handleClose} backdrop="static" closeVariant="light">
       <Modal.Header className="justify-content-between">
-        <Modal.Title>Petunjuk Bermain</Modal.Title>
+        {/* <Modal.Title>Petunjuk Bermain</Modal.Title> */}
+        <Modal.Title>Play Instructions</Modal.Title>
         <Button variant="" onClick={handleClose} >
             <img src="/img/x-lg.svg" alt="" />
         </Button>

@@ -31,10 +31,15 @@ export default function Game() {
   // console.log(clickCount)
 
   const generateRandomIndex = () => {
+    if(usedIndexes.length >= 10) {
+      return 
+    }
+
     let newIndex: any;
     do {
       newIndex = Math.floor(Math.random() * data?.length);
     } while (usedIndexes.includes(newIndex));
+    
     setIndex(newIndex);
     setUsedIndexes([...usedIndexes, newIndex]);
     setTimer(time);
@@ -51,6 +56,8 @@ export default function Game() {
     }
   }, [questionCount, timer]);
 
+  console.log(timer)
+
   useEffect(() => {
     if (timer > 0 && questionCount < 10) {
       const interval = setInterval(() => {
@@ -60,8 +67,6 @@ export default function Game() {
       return () => clearInterval(interval);
     }
   }, [questionCount, timer]);
-
-  console.log(timer);
 
   useEffect(() => {
     if (timer == time - 1) {
@@ -116,7 +121,7 @@ export default function Game() {
         </Alert>
       ) : (
         <ContainerStyled>
-          <p>{usedIndexes?.length < 10 && <Button variant="outline-danger" className="rounded-circle" style={{width: '50px', height: '50px'}}>{timer}</Button>}</p>
+          <p>{usedIndexes?.length < 10 && <Button variant="outline-danger" className="rounded-circle" style={{width: '50px', height: '50px'}} disabled>{timer}</Button>}</p>
           <div className="mx-3">
             {usedIndexes.length === 10 ? (
               <Finished correctAnswer={correctAnswer} hidden />
