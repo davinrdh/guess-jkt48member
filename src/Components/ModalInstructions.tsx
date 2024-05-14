@@ -15,7 +15,7 @@ export default function ModalInstructions({show, handleClose}: any) {
         {/* <p>1. Pilih status member terlebih dahulu untuk bermain.</p> */}
         <p>1. Select member status first to play.</p>
         {/* <p>2. Jawab dengan nama panggilan/nickname member.</p> */}
-        <p>2. Answer with the member nickname.</p>
+        <p>2. Answer with the member nickname (referring to the jkt48 website).</p>
         {/* <p>3. Kamu bisa menekan tombol enter atau tombol submit untuk menjawab.</p> */}
         <p>3. You can press the enter button or the submit button to answer.</p>
         {/* <p>4. Jika tidak bisa menjawab bisa menekan tombol skip untuk melanjutkan.</p>   */}
