@@ -211,7 +211,7 @@ export const dataMembers = [
     id: 27,
     img: "/img/member/member27.jpg",
     member: "shani",
-    active: true,
+    active: false,
     status: 'member',
     gen: 3
   },
@@ -363,7 +363,7 @@ export const dataMembers = [
     id: 46,
     img: "/img/member/member46.jpg",
     member: "jeane",
-    active: true,
+    active: false,
     status: 'trainee',
     gen: 11
   },
